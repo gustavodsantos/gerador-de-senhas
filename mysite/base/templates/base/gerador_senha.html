@@ -55,34 +55,88 @@
     </div>
 </div>
 
+<!-- Notificações dinâmicas -->
+<div id="notificacoes" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;"></div>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', () => {
         const senhaTexto = document.getElementById('senhaGerada');
         const copiarBotao = document.getElementById('copiarSenha');
+        const notificacoes = document.getElementById('notificacoes');
 
         if (copiarBotao) {
             copiarBotao.addEventListener('click', function () {
-                // Verifica se a senha está presente
-                if (senhaTexto && navigator.clipboard) {
-                    // Copia a senha para a área de transferência usando a API Clipboard
-                    navigator.clipboard.writeText(senhaTexto.textContent)
-                        .then(() => {
-                            // Mostra uma notificação de sucesso
-                            copiarBotao.textContent = 'Copiado!';
-                            copiarBotao.classList.add('btn-success');
-                            setTimeout(() => {
-                                copiarBotao.textContent = 'Copiar';
-                                copiarBotao.classList.remove('btn-success');
-                            }, 2000);
-                        })
-                        .catch(err => {
-                            console.error('Erro ao copiar a senha:', err);
-                            alert('Falha ao copiar a senha. Por favor, tente novamente.');
-                        });
+                // Verifica se há uma senha válida para ser copiada
+                if (senhaTexto && senhaTexto.textContent.trim() !== '') {
+                    // Tenta usar a API Clipboard
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(senhaTexto.textContent.trim())
+                            .then(() => {
+                                mostrarNotificacao('Senha copiada com sucesso!', 'success');
+                                atualizarBotaoCopiar('Copiado!');
+                            })
+                            .catch(err => {
+                                console.error('Erro ao copiar a senha:', err);
+                                mostrarNotificacao('Erro ao copiar a senha. Tente novamente.', 'danger');
+                            });
+                    } else {
+                        // Fallback para navegadores mais antigos
+                        copiarTextoAlternativo(senhaTexto.textContent.trim());
+                    }
                 } else {
-                    alert('A senha não está disponível para cópia.');
+                    mostrarNotificacao('A senha não está disponível para cópia. Gere uma senha primeiro.', 'warning');
                 }
             });
+        }
+
+        /**
+         * Copiar texto usando fallback com <textarea>
+         */
+        function copiarTextoAlternativo(texto) {
+            const textarea = document.createElement('textarea');
+            textarea.value = texto;
+            document.body.appendChild(textarea);
+
+            textarea.select();
+            try {
+                document.execCommand('copy'); // Método legado
+                mostrarNotificacao('Senha copiada com sucesso! (Fallback)', 'success');
+                atualizarBotaoCopiar('Copiado!');
+            } catch (error) {
+                console.error('Erro ao copiar o texto:', error);
+                mostrarNotificacao('Erro ao copiar a senha. Tente novamente.', 'danger');
+            }
+            document.body.removeChild(textarea); // Remove o textarea temporário
+        }
+
+        /**
+         * Atualiza o texto do botão "Copiar" e o estilo depois do clique
+         */
+        function atualizarBotaoCopiar(mensagem) {
+            copiarBotao.textContent = mensagem;
+            copiarBotao.classList.add('btn-success');
+            setTimeout(() => {
+                copiarBotao.textContent = 'Copiar';
+                copiarBotao.classList.remove('btn-success');
+            }, 2000);
+        }
+
+        /**
+         * Exibe uma notificação no canto inferior direito
+         */
+        function mostrarNotificacao(mensagem, tipo) {
+            const alerta = document.createElement('div');
+            alerta.className = `alert alert-${tipo} fade show`;
+            alerta.textContent = mensagem;
+
+            // Temporizador para ocultar automaticamente
+            setTimeout(() => {
+                alerta.classList.remove('show');
+                alerta.classList.add('hide');
+                setTimeout(() => alerta.remove(), 500);
+            }, 3000);
+
+            notificacoes.appendChild(alerta);
         }
     });
 </script>
