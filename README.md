@@ -27,11 +27,8 @@ Ferramenta utilizada para criar senhas seguras de forma automática.
    ```bash
    poetry install
    ```
-4. Configure as variáveis de ambiente necessárias. Um exemplo de arquivo `.env` pode incluir:
-   ```
-   DATABASE_URL=postgres://<usuário>:<senha>@localhost:5432/<nome_do_banco>
-   SECRET_KEY=<sua_chave_secreta>
-   ```
+4. Configure as variáveis de ambiente necessárias. Utilize o arquivo `env-sample` como base para criar o arquivo `.env`. 
+
 5. Aplique as migrações do banco de dados:
    ```bash
    python manage.py migrate
@@ -46,7 +43,7 @@ Ferramenta utilizada para criar senhas seguras de forma automática.
    ```bash
    python manage.py runserver
    ```
-2. Acesse o projeto no navegador através de [http://127.0.0.1:8000](http://127.0.0.1:8000).
+2. Acesse o projeto no navegador através de [http://localhost](http://localhost).
 
 3. Para gerar senhas, utilize o formulário fornecido na interface da aplicação. Preencha os parâmetros (comprimento, letras maiúsculas, números, caracteres especiais) conforme necessário e clique em "Gerar Senha".
 
