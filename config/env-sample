@@ -8,6 +8,8 @@ POSTGRES_DB=postgres
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 
+GUNICORN_RELOAD=
+
 # Configure os dominios ou ips que sua aplicação vai rodar, separadas por vírgula
 ALLOWED_HOSTS=localhost,127.0.0.1
 

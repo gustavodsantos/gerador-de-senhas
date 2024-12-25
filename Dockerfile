@@ -14,7 +14,6 @@ ENV POETRY_VIRTUALENVS_CREATE=false \
     POETRY_CACHE_DIR='/var/cache/pypoetry'
 
 # Instalar o Poetry
-#RUN curl -sSL https://install.python-poetry.org | python3 -
 RUN pip install poetry
 
 #Copiar os arquivos pyproject.toml e poetry.lock da raiz do projeto para o contêiner
