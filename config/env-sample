@@ -13,6 +13,8 @@ GUNICORN_RELOAD=
 # Configure os dominios ou ips que sua aplicação vai rodar, separadas por vírgula
 ALLOWED_HOSTS=localhost,127.0.0.1
 
+DOMAIN_NAME=localhost
+
 ## 🖥️  Para uso local via virtualenv
 #POSTGRES_HOST=localhost
 #POSTGRES_PORT=15432
